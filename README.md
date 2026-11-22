@@ -1,2 +1,32 @@
 # POSANT
-Draft: Adds geographic / 3D routing (UAVs, FANETs, GPS-equipped outdoor meshes).
+
+<!-- org-sync:begin badges -->
+| Group | Badges |
+| --- | --- |
+| Build | [![Built on: ns3-dev](https://img.shields.io/badge/built%20on-ns3--dev%20image-blue?logo=docker)](https://github.com/orgs/swarm-routing/packages/container/package/ns3-dev) |
+| Quality | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=swarm-routing_POSANT&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=swarm-routing_POSANT) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=swarm-routing_POSANT&metric=bugs)](https://sonarcloud.io/summary/new_code?id=swarm-routing_POSANT) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=swarm-routing_POSANT&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=swarm-routing_POSANT) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=swarm-routing_POSANT&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=swarm-routing_POSANT) [![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/swarm-routing/POSANT?utm_source=oss&utm_medium=github&utm_campaign=swarm-routing%2FPOSANT&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai) |
+| Release | [![Licence: GPL-2.0-only, core/ MIT OR GPL-2.0-only](https://img.shields.io/badge/licence-GPL--2.0--only%2C%20core%2F%20MIT%20OR%20GPL--2.0--only-blue)](LICENSING.md) |
+| Trust | [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/swarm-routing/POSANT/badge)](https://scorecard.dev/viewer/?uri=github.com/swarm-routing/POSANT) |
+| Stack | [![C++23](https://img.shields.io/badge/C%2B%2B-23-blue?logo=cplusplus)](AGENTS.md) [![Runs on ns-3](https://img.shields.io/badge/runs%20on-ns--3-informational)](https://www.nsnam.org) |
+| Community & docs | [![Open RCAPA](https://img.shields.io/github/issues/swarm-routing/POSANT/rcapa?label=open%20RCAPA&color=blue)](https://github.com/swarm-routing/POSANT/blob/main/docs/rcapa/README.md) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow)](https://www.conventionalcommits.org) |
+<!-- org-sync:end badges -->
+
+POSANT (position-based ant colony routing) as a standalone swarm routing protocol for geographic and 3D networks: UAV swarms, FANETs and GPS-equipped outdoor meshes. It will use swarm-core's `ILocationProvider` port for positions and directional zoning in 2D and 3D.
+
+**Status: planned.** Nothing is built yet; the plan is #3 and swarm-routing/.github#672.
+
+<!-- org-sync:begin develop -->
+## Develop
+
+New here? [docs/development.md](docs/development.md) is the developer guide:
+the tools to install, how to get the code and its dependencies, how to
+build, test, run and lint it, the Docker images, what CI checks and how to
+read a red run. How changes are proposed, reviewed and released is the org's
+[CONTRIBUTING.md](https://github.com/swarm-routing/.github/blob/main/CONTRIBUTING.md).
+Whether a regression here gets an RCAPA (root cause analysis with corrective
+and preventive actions), and how: [docs/rcapa/README.md](docs/rcapa/README.md).
+<!-- org-sync:end develop -->
+
+## Licence
+
+GPL-2.0-only, with `core/` MIT OR GPL-2.0-only: see [LICENSING.md](LICENSING.md).
