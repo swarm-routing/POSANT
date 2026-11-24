@@ -9,7 +9,7 @@ before changing anything. Org-wide conventions:
 
 **Status: set up, no protocol code yet (swarm-routing/.github#672, #36).** The plan is the epic #3; `core/` is the epic #37, whose first slice (#38) waits for the review of `docs/fidelity.md` (rule 11), which waits for the papers' texts (#24).
 
-POSANT (Kamali & Opatrny: ICWMC 2007, https://doi.org/10.1109/icwmc.2007.68; Journal of Networks 3(4), 2008, https://doi.org/10.4304/jnw.3.4.31-41) as a standalone swarm routing protocol for geographic and 3D networks: UAV swarms, FANETs and GPS-equipped outdoor meshes. A reactive ant-colony algorithm that uses node positions; it will take them from swarm-core's `ILocationProvider` port, in 2D as the papers state it and in 3D as a stated repo choice.
+POSANT (Kamali & Opatrny: ICWMC 2007, https://doi.org/10.1109/icwmc.2007.68; Journal of Networks 3(4), 2008, https://doi.org/10.4304/jnw.3.4.31-41) as a standalone swarm routing protocol for geographic and 3D networks: UAV swarms, FANETs and GPS-equipped outdoor meshes. A reactive ant-colony algorithm that uses node positions; it is to take them from a location port (planned for swarm-core as `ILocationProvider`; not in its v2.0.0, see #38), in 2D first, a repository assumption until a paper locator confirms the papers' dimensionality (`docs/fidelity.md`), and in 3D as a stated repo choice.
 
 ```
 core/       simulator-agnostic algorithm + unit tests (no simulator headers; MIT OR GPL-2.0-only, core/LICENSE);
