@@ -54,7 +54,8 @@ What is planned and in progress here: the issues labelled [`epic`](https://githu
 
 | Epic | Status | Sub-issues closed |
 |------|--------|-------------------|
-| [#3](https://github.com/swarm-routing/POSANT/issues/3) Bootstrap POSANT protocol on swarm-core (DirectionalZoning 2D/3D, fidelity, 3D UAV benchmarks) | Planned | 0 / 1 |
+| [#3](https://github.com/swarm-routing/POSANT/issues/3) Bootstrap POSANT protocol on swarm-core (DirectionalZoning 2D/3D, fidelity, 3D UAV benchmarks) | Planned | 0 / 2 |
+| [#37](https://github.com/swarm-routing/POSANT/issues/37) core/: POSANT's simulator-agnostic protocol on swarm-core, from the reviewed fidelity sheet | Planned | 0 / 1 |
 
 <!-- epics:end -->
 
