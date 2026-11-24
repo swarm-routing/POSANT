@@ -26,7 +26,55 @@ No ns-3 module yet (#3). Releases: `.github/workflows/release.yml` on the org's 
 ```bash
 make help    # the org's standard target names: build, test, lint, format, check, clean, shell, ci
 make check   # the local gates: lint, test, licence headers, org-sync (CI also checks the PR title and the review gate)
+make core-test                       # core/ alone on swarm-core at swarm-core.lock's tag (fetched into ~/.cache)
+make core-test VCPKG_ROOT=/path/to/vcpkg   # the same on swarm-core's vcpkg port, as CI
+cmake -S core -B build/sanitized -DPOSANT_CORE_SANITIZE=ON -DSWARM_CORE_DIR=<swarm-core>/core && cmake --build build/sanitized && ctest --test-dir build/sanitized
 ```
+
+CI: `.github/workflows/core.yml` (`core-test`: `core/` with strict warnings as errors and ctest, clang-tidy with the org `.clang-tidy`, again under ASan + UBSan, then the installed package `posant-core` found by a scratch consumer; `core-format`: clang-format-18 with the org style), `swarm-core-pin.yml` (`swarm-core / pin`), plus the licence, org-sync and PR-title checks. swarm-core v2.0.0 has no `ILocationProvider` port yet: the first slice (#38) needs it there first, or a stated port of its own in `core/`.
+
+<!-- org-sync:begin dependencies -->
+## How this repository gets swarm-core and ns3-tools
+
+- **swarm-core's `core/`**: through vcpkg in manifest mode (swarm-routing/.github#489),
+  so CI builds against the published port. `vcpkg.json` depends on `swarm-core`
+  and pins its version and port-version with an `overrides` entry;
+  `vcpkg-configuration.json` takes the port from
+  [swarm-routing/vcpkg-registry](https://github.com/swarm-routing/vcpkg-registry)
+  at a `baseline` commit (the port's version and the SHA512 of its release
+  asset) and vcpkg's helper ports from the builtin registry.
+  `core/CMakeLists.txt` calls `find_package(swarm-core CONFIG REQUIRED)`
+  (imported target `swarm::core`); configure it with the vcpkg toolchain,
+  `-DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"`.
+  The core CI job sets vcpkg up with swarm-routing/.github's `setup-vcpkg`
+  action (the tool at a pinned commit, the binary cache on the org's GitHub
+  Packages NuGet feed; the job needs `packages: write`).
+- **The ns-3 build and the lock**: vcpkg has no ns-3 port, so the ns-3 build
+  keeps the release tag. `swarm-core.lock` names that release (repository,
+  tag, the commit the tag names, version, and the SHA256 of
+  `swarm-core-<ver>.tar.gz` from the release's `SHA256SUMS`); the `Makefile`
+  and the ns-3 dependency name its tag; `core-deps` (the licence boundary is
+  pinned by commit, org rule 2) and a benchmark cell's dependency (its build
+  mode takes a commit) name the commit the tag names.
+- **One version**: the `swarm-core / pin` check (swarm-routing/.github
+  `tools/checks/check-swarm-core-pin.py`, vcpkg mode) verifies the lock against
+  the release, that the override pins the lock's version, and that the
+  registry baseline is a commit on the registry's `main` holding exactly that
+  version and port-version; it reports a newer swarm-core release
+  (swarm-routing/.github#586: a warning on a PR or a merge group, red on
+  `main` only while org-bot's bump PR is open).
+- **Bumping**: never by hand. org-bot's `swarm-core-pin` task opens one PR
+  (`org-bot/swarm-core-pin`) that writes the lock from the new release, moves
+  the tag and its commit on every line above, the override, and the registry
+  baseline to the registry's `main`, once that `main` holds the release (its
+  port PR merged; until then it waits). Between releases nothing moves.
+- **The ns-3 build**: this repository's own ns-3 CI (it does not call
+  `reusable-ns3-ci.yml`) builds from the release locks alone, with no
+  canary leg on `@main` (maintainer decision on swarm-routing/.github#411). A
+  dependency's next release reaches it through org-bot's lock bump PR.
+- **Working against an unreleased swarm-core**: `-DSWARM_CORE_DIR=<checkout>/core`
+  builds `core/` on a local checkout instead of the port (development only).
+<!-- org-sync:end dependencies -->
 
 ## Golden rules (invariants — do not break)
 

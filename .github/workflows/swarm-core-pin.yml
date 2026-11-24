@@ -1,0 +1,24 @@
+# Copyright (c) 2026 Daniel Joppi (https://github.com/swarm-routing)
+# SPDX-License-Identifier: GPL-2.0-only
+name: swarm-core pin
+
+# POSANT's core/ builds on swarm-core's core/ at the release swarm-core.lock
+# names (swarm-routing/ns3-swarm-core#134). This check (swarm-routing/.github
+# reusable-swarm-core-pin.yml, check-swarm-core-pin.py in lock mode) fails
+# unless the lock verifies against the release and the Makefile and every
+# workflow name its tag (benchmark-cell.yml: the commit the tag names), and
+# when a newer swarm-core release is out; org-bot then opens the bump PR.
+# swarm-core main moving between releases is no finding. The check is named
+# `swarm-core / pin`.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:
+
+permissions:
+  contents: read
+
+jobs:
+  swarm-core:
+    uses: swarm-routing/.github/.github/workflows/reusable-swarm-core-pin.yml@a3155ab8851bab4a54f41b770f22587afee30f2d # main@2026-11-24
