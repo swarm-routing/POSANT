@@ -7,9 +7,19 @@ before changing anything. Org-wide conventions:
 
 ## What this repo is
 
-**Status: planned (swarm-routing/.github#672).** Nothing is built yet: the plan is #3.
+**Status: set up, no protocol code yet (swarm-routing/.github#672, #36).** The plan is the epic #3; `core/` is the epic #37, whose first slice (#38) waits for the review of `docs/fidelity.md` (rule 11), which waits for the papers' texts (#24).
 
-POSANT (position-based ant colony routing) as a standalone swarm routing protocol for geographic and 3D networks: UAV swarms, FANETs and GPS-equipped outdoor meshes. It will use swarm-core's `ILocationProvider` port for positions and directional zoning in 2D and 3D.
+POSANT (Kamali & Opatrny: ICWMC 2007, https://doi.org/10.1109/icwmc.2007.68; Journal of Networks 3(4), 2008, https://doi.org/10.4304/jnw.3.4.31-41) as a standalone swarm routing protocol for geographic and 3D networks: UAV swarms, FANETs and GPS-equipped outdoor meshes. A reactive ant-colony algorithm that uses node positions; it is to take them from a location port (planned for swarm-core as `ILocationProvider`; not in its v2.0.0, see #38), in 2D first, a repository assumption until a paper locator confirms the papers' dimensionality (`docs/fidelity.md`), and in 3D as a stated repo choice.
+
+```
+core/       simulator-agnostic algorithm + unit tests (no simulator headers; MIT OR GPL-2.0-only, core/LICENSE);
+            the CMake package posant-core (imported target posant::core) on swarm-core's vcpkg port
+            (vcpkg.json, vcpkg-configuration.json, at the release swarm-core.lock names); empty until #38
+docs/       fidelity.md (the papers -> implementation, every row sourced, a repo choice or unknown),
+            references.bib (the works relied on, from Crossref), roadmap.md (the release ladder)
+```
+
+No ns-3 module yet (#3). Releases: `.github/workflows/release.yml` on the org's `reusable-release.yml` (`make dist`, `.cz.toml`, `vcpkg-ports: posant-core`), cut on the maintainer's request only.
 
 ## Build & verify
 
@@ -83,6 +93,9 @@ Org-wide (1–9), then this repo's own.
 9. **Nothing shipped depends on `.claude/`.** Skills hold procedures; scripts
    that anything shipped needs live in `tools/` (AntHocNet ADR-0014).
 <!-- org-sync:end org-rules -->
+10. **`core/` never includes a simulator header**: only the C++ standard library, its own files and swarm-core's `core/`. Positions, time, randomness and sending come in through swarm-core's ports (`ILocationProvider`, the RNG and timer ports); an adapter only converts headers, executes `RouteDecision`s and owns timers and queues (AntHocNet golden rules 1–2).
+11. **Fidelity sheet before code.** No protocol code lands before `docs/fidelity.md` is reviewed by the maintainer. Every mechanism and parameter cites its paper section (`[KEY] §x`, `eq. N`, `Fig. N`), or says `repo choice: <reason>`, or `unknown`; a row read from neither paper stays `unknown`, never a guess. The 3D generalisation is a repo choice with its own rows.
+12. **Written fresh.** No POSANT code exists in AntHocNet or elsewhere in the org; `core/` (dual) is original work, and anything reused from another protocol keeps that protocol's licence and provenance. The papers are cited by DOI link only; where they are not openly available, their copies stay out of this public repository.
 
 ## Conventions
 
@@ -318,5 +331,9 @@ chat, not the record.
 | You want to… | Go to |
 |--------------|-------|
 | The org's invariants, labels, issue shape | [`swarm-routing/.github` CONTRIBUTING.md](https://github.com/swarm-routing/.github/blob/main/CONTRIBUTING.md) |
+| Know which release a piece of work serves, or why something is not planned | [`docs/roadmap.md`](docs/roadmap.md) (the release ladder; issues carry `release:` labels) |
+| The plan | #3, #37; swarm-routing/.github#672, org ROADMAP "Protocol repositories" |
+| The source, and what it leaves open | [`docs/fidelity.md`](docs/fidelity.md), [`docs/references.bib`](docs/references.bib), #24 |
+| Shared primitives | `swarm-routing/swarm-core` (`ILocationProvider`, `PheromoneTable`, the wire helpers), from its vcpkg port |
 | Record an architecture decision | [`docs/adr/`](docs/adr/) (`0000-template.md`) |
 | Pick up open work | this repo's issues — highest open `priority:P*` first; newest open `handoff` issue for work in flight |

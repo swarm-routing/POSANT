@@ -33,7 +33,7 @@ format: ## apply the formatters
 	git ls-files "*.h" "*.cc" "*.cpp" "*.hpp" | xargs -r clang-format -i
 
 clean: ## remove build outputs
-	rm -rf build
+	rm -rf build dist
 
 shell: ## an interactive shell in the dev image with this repo at /src
 	@command -v docker >/dev/null || { echo "make shell: docker not found (Docker Desktop, Colima, or docker.io)" >&2; exit 127; }
@@ -45,6 +45,18 @@ headers: org-tools ## licence headers (org rule 1): the Go gate CI runs, in dock
 check: lint test headers org-sync-check ## everything CI gates on
 
 ci: check ## exactly what CI runs
+
+# The release asset for swarm-routing/.github's reusable-release.yml, which sets
+# RELEASE_VERSION (locally: .cz.toml's version). A git archive of the commit, so
+# only tracked files, deterministically: posant-<ver>/ with core/ (once it
+# exists), docs/, the licence files, README.md, AGENTS.md, CITATION.cff, the
+# Makefile and CHANGELOG.md (once the first bump writes it).
+RELEASE_VERSION ?= $(shell sed -n 's/^version = "\(.*\)"$$/\1/p' .cz.toml)
+.PHONY: dist
+dist: ## the release asset in dist/: posant-<ver>.tar.gz
+	rm -rf dist && mkdir -p dist
+	git archive --format=tar.gz --prefix=posant-$(RELEASE_VERSION)/ -o dist/posant-$(RELEASE_VERSION).tar.gz HEAD \
+		$$(git ls-tree --name-only HEAD core docs LICENSE LICENSE-MIT LICENSING.md README.md AGENTS.md CITATION.cff Makefile CHANGELOG.md)
 
 # org-sync:begin org-tools
 # The org tooling (check-headers, org-sync): a shallow clone, refreshed to ORG_REF,
