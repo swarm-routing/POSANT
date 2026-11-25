@@ -112,7 +112,10 @@ set(POSANT_WARNINGS -Wall -Wextra -Wpedantic -Wshadow -Wnon-virtual-dtor -Wold-s
                     -Wno-error=deprecated-declarations)
 
 add_library(posant_core STATIC
+  posant-header.cc
+  posant-router.cc
   posant-version.cc
+  posant-zone.cc
 )
 add_library(posant::core ALIAS posant_core)
 # the package version, for posant::core::version() and the tests
@@ -136,6 +139,9 @@ target_compile_options(posant_core PRIVATE ${POSANT_WARNINGS})
 if(POSANT_CORE_TESTS)
   add_executable(posant_core_tests
     test/run-core-tests.cc
+    test/test-header.cc
+    test/test-router.cc
+    test/test-zone.cc
   )
   target_link_libraries(posant_core_tests PRIVATE posant_core)
   target_compile_definitions(posant_core_tests PRIVATE POSANT_CORE_VERSION_STRING="${PROJECT_VERSION}")
@@ -152,7 +158,11 @@ if(POSANT_CORE_INSTALL)
           ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
           LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
   install(FILES
+    posant-config.h
+    posant-header.h
+    posant-router.h
     posant-version.h
+    posant-zone.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/posant-core)
   install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/posant-core)
   install(EXPORT posant-coreTargets NAMESPACE posant:: DESTINATION ${_posant_core_cmake_dir})
