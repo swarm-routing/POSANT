@@ -15,7 +15,7 @@ POSANT (position-based ant colony routing) as a standalone swarm routing protoco
 
 POSANT is the algorithm of Kamali & Opatrny ([ICWMC 2007](https://doi.org/10.1109/icwmc.2007.68); [Journal of Networks, 2008](https://doi.org/10.4304/jnw.3.4.31-41)): a reactive ant colony routing algorithm that combines ant colony optimization with the positions of nodes.
 
-**Status: set up, no protocol code yet.** The fidelity sheet ([docs/fidelity.md](docs/fidelity.md)) comes first and is reviewed before any of `core/` is written; the release ladder is [docs/roadmap.md](docs/roadmap.md). The plan is #3 and swarm-routing/.github#672.
+**Status: v0 from secondary sources.** Neither paper is openly available, so the fidelity sheet ([docs/fidelity.md](docs/fidelity.md)) is written from the first author's open master's thesis ([Kamali, Concordia University, 2007](https://spectrum.library.concordia.ca/id/eprint/975539/)) and an open review, by the maintainer's decision on [#24](https://github.com/swarm-routing/POSANT/issues/24#issuecomment-7147106974). It claims no fidelity to the papers, and the rows that wait on them are listed at its end. `core/` is built from the sheet once it is reviewed. Nothing is released on this basis. The release ladder is [docs/roadmap.md](docs/roadmap.md); the plan is #3 and swarm-routing/.github#672.
 
 <!-- org-sync:begin develop -->
 ## Develop
