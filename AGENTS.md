@@ -7,14 +7,18 @@ before changing anything. Org-wide conventions:
 
 ## What this repo is
 
-**Status: v0 from secondary sources (#24's decision of 2026-11-24).** `docs/fidelity.md` is written from the first author's open master's thesis and an open review, not the papers (#24 waits on them). `core/` (epic #37, first slice #38) is built from it once the sheet's review PR has merged (rule 11).
+**Status: v0 from secondary sources (#24's decision of 2026-11-24).** `docs/fidelity.md` is written from the first author's open master's thesis and an open review, not the papers (#24 waits on them). `core/` (epic #37, first slice #38) holds the v0 router built from it (rule 11); no ns-3 adapter yet.
 
 POSANT (Kamali & Opatrny: ICWMC 2007, https://doi.org/10.1109/icwmc.2007.68; Journal of Networks 3(4), 2008, https://doi.org/10.4304/jnw.3.4.31-41) as a standalone swarm routing protocol for geographic and 3D networks: UAV swarms, FANETs and GPS-equipped outdoor meshes. A reactive ant-colony algorithm that uses node positions; it is to take them from a location port (planned for swarm-core as `ILocationProvider`; not in its v2.0.0, see #38), in 2D first, a repository assumption until a paper locator confirms the papers' dimensionality (`docs/fidelity.md`), and in 3D as a stated repo choice.
 
 ```
 core/       simulator-agnostic algorithm + unit tests (no simulator headers; MIT OR GPL-2.0-only, core/LICENSE);
             the CMake package posant-core (imported target posant::core) on swarm-core's vcpkg port
-            (vcpkg.json, vcpkg-configuration.json, at the release swarm-core.lock names); empty until #38
+            (vcpkg.json, vcpkg-configuration.json, at the release swarm-core.lock names):
+            posant-config.h (parameters, each naming its fidelity row), posant-zone (the three zones, 2D and 3D cones),
+            posant-header (the versioned wire header), posant-router (one node: [K07t] ch. 5's ants, pheromone,
+            BR table, source convergence, regular and broken modes); test/ (ctest; posant-net.h is a tiny
+            deterministic network that sends every header through the codec)
 docs/       fidelity.md (the papers -> implementation, every row sourced, a repo choice or unknown),
             references.bib (the works relied on, from Crossref), roadmap.md (the release ladder)
 ```
@@ -142,7 +146,7 @@ Org-wide (1–9), then this repo's own.
    that anything shipped needs live in `tools/` (AntHocNet ADR-0014).
 <!-- org-sync:end org-rules -->
 10. **`core/` never includes a simulator header**: only the C++ standard library, its own files and swarm-core's `core/`. Positions, time, randomness and sending come in through swarm-core's ports (`ILocationProvider`, the RNG and timer ports); an adapter only converts headers, executes `RouteDecision`s and owns timers and queues (AntHocNet golden rules 1–2).
-11. **Fidelity sheet before code.** No protocol code lands before `docs/fidelity.md` is reviewed by the maintainer, through its own PR. Every mechanism and parameter cites its source section (`[KEY] §x`, `eq. N`, `Fig. N`), or says `repo choice: <reason>`, or `unknown`, and its status names its basis: `paper`, `secondary: [KEY]` or `repo choice`; nothing comes from memory, and a row no open source gives stays `unknown`. While the papers are not read, the sheet and `core/` are **v0 from secondary sources** (maintainer decision 2026-11-24, [#24](https://github.com/swarm-routing/POSANT/issues/24#issuecomment-7147106974)): v0 claims no paper fidelity, the anchor gate stays open, and nothing is released on it. The 3D generalisation is a repo choice with its own rows.
+11. **Fidelity sheet before code.** No protocol code lands before `docs/fidelity.md` is reviewed by the maintainer, through its own PR. Every mechanism and parameter cites its source section (`[KEY] §x`, `eq. N`, `Fig. N`), or says `repo choice: <reason>`, or `unknown`, and its status names its basis: `paper`, `secondary: [KEY]` or `repo choice`; nothing comes from memory, and a row no open source gives stays `unknown`. While the papers are not read, the sheet and `core/` are **v0 from secondary sources** (maintainer decision 2026-11-24, [#24](https://github.com/swarm-routing/POSANT/issues/24#issuecomment-7147106974)): v0 claims no paper fidelity, the anchor gate stays open, and nothing is released on it. For the v0 sheet, CodeRabbit's review plus green required checks count as the review, and its PR may auto-merge once every CodeRabbit thread is fixed or answered (maintainer decision 2026-11-24, [#24](https://github.com/swarm-routing/POSANT/issues/24#issuecomment-7147225984)); the maintainer's own review follows when the papers are in hand and gates the anchor and any claim of paper fidelity. The 3D generalisation is a repo choice with its own rows.
 12. **Written fresh.** No POSANT code exists in AntHocNet or elsewhere in the org; `core/` (dual) is original work, and anything reused from another protocol keeps that protocol's licence and provenance. Sources are cited by DOI link, or a DOI-less work by its repository's landing page; copies of works that are not openly licensed stay out of this public repository.
 
 ## Conventions
