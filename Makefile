@@ -16,7 +16,7 @@ BUILD_ARGS ?=
 # swarm-core's core/ at the release swarm-core.lock names (its tag): the include
 # check, and core-test's swarm-core when no VCPKG_ROOT is given.
 SWARM_CORE_SRC ?= $(HOME)/.cache/swarm-routing/swarm-core
-SWARM_CORE_REF ?= v2.0.0
+SWARM_CORE_REF ?= v2.1.0
 # core/ takes swarm-core from its vcpkg port (vcpkg.json, vcpkg-configuration.json)
 # when VCPKG_ROOT is a vcpkg checkout, as CI; else from SWARM_CORE_DIR, by
 # default the checkout above.
