@@ -20,6 +20,10 @@ ruleset = "protocol"
 # Only checks that run on every PR today. Add the ns-3 checks once ns3.yml exists
 # and runs on pull_request and merge_group.
 required_checks = ["check / org-sync", "headers / licence", "title / title", "core-test", "core-format", "swarm-core / pin", "review / coderabbit"]
+# Run on main but gate nothing (swarm-routing/.github#775): CodeQL default setup, SonarQube Cloud
+# (report-only), Scorecard (push/schedule), security-autofix (schedule), notify (push-only
+# workflows), and api-docs' doxygen (every PR, but not required in ARA or swarm-adapter-ns3).
+optional_checks = ["Analyze (*)", "SonarCloud Code Analysis", "analysis / Scorecard analysis", "autofix / *", "notify", "doxygen / doxygen"]
 
 [review]
 # a new dependency on a moving ref fails protocol-review: this repository
